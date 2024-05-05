@@ -13,8 +13,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+generator nestgraphql {
+    provider = "node node_modules/prisma-nestjs-graphql"
+    output = "../../../generated/db-types/src"
+    fields_Validator_from = "class-validator"
+    fields_Validator_input = true
+    fields_Validator_output = true
+    emitSingle = true
+}
+
 model User {
   id    Int     @id @default(autoincrement())
+
+  /// @Validator.IsEmail()
   email String  @unique
+
+  /// @Validator.IsString()
+  /// @Validator.MaxLength(20)
+  /// @Validator.MinLength(3)
   name  String?
+
+  /// @HideField()
+  /// @Validator.IsString()
+  /// @Validator.MaxLength(100)
+  /// @Validator.MinLength(8)
+  password String
 }

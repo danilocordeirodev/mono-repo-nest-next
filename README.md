@@ -67,8 +67,10 @@ nx g @nx/nest:resource -p api --directory="app/resources" --type="graphql-code-f
 
 create folder libs
 
- nx g @nx/nest:library api/data-access-db --buildable --tags "scope:api" ->> choose derivated
+ nx g @nx/nest:library api/data-access-db --buildable --tags "scope:api" ->> choose derived
 
  cd libs/api/data-access-db/src/lib
 
  npx prisma init
+
+ nx g @nx/nest:library api/generated/db-types --buildable --tags "scope:api"
