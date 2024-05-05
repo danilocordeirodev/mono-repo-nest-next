@@ -64,3 +64,11 @@ It will show tasks that you can run with Nx.
 npx create-nx-workspace full-stack --preset=nest --appName=api
 
 nx g @nx/nest:resource -p api --directory="app/resources" --type="graphql-code-first" --crud --name user
+
+create folder libs
+
+ nx g @nx/nest:library api/data-access-db --buildable --tags "scope:api" ->> choose derivated
+
+ cd libs/api/data-access-db/src/lib
+
+ npx prisma init
