@@ -63,4 +63,4 @@ It will show tasks that you can run with Nx.
 
 npx create-nx-workspace full-stack --preset=nest --appName=api
 
-nx g @nrwl/nest:resource -p api --directory="app/resources" --type="graphql-code-first" --crud --name user
+nx g @nx/nest:resource -p api --directory="app/resources" --type="graphql-code-first" --crud --name user
