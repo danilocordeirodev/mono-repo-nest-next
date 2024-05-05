@@ -3,7 +3,7 @@
  * This is only a minimal backend to get started.
  */
 
-import { Logger } from '@nestjs/common';
+import { BadRequestException, Logger, ValidationError, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
@@ -12,6 +12,18 @@ import { FastifyAdapter } from '@nestjs/platform-fastify';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, new FastifyAdapter());
   const globalPrefix = 'api';
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      exceptionFactory: (errors: ValidationError[]) => {
+        const errorsMessages = errors.map(error => 
+          Object.values(error.constraints),
+        );
+        return new BadRequestException(errorsMessages.toString());
+      },
+      forbidUnknownValues: false
+    })
+  )
   app.setGlobalPrefix(globalPrefix);
   const port = process.env.PORT || 3000;
   await app.listen(port);

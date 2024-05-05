@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start:dev": "nx serve api",
+    "start:dev": "nx serve api --verbose",
     "build": "nx build",
     "test": "nx test",
     "db:up": "npm run db:docker && npm run db:dev-migrate && npm run db:create-client -- --watch",
