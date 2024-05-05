@@ -2,11 +2,12 @@ import { Field } from '@nestjs/graphql';
 import { ObjectType } from '@nestjs/graphql';
 import { Int } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
-import { Float } from '@nestjs/graphql';
 import { registerEnumType } from '@nestjs/graphql';
 import { ArgsType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
+import { ValidateNested } from 'class-validator';
 import { Prisma } from '@prisma/client';
+import { Float } from '@nestjs/graphql';
 import { HideField } from '@nestjs/graphql';
 import * as Validator from 'class-validator';
 import { ID } from '@nestjs/graphql';
@@ -53,20 +54,6 @@ export class AffectedRows {
 }
 
 @InputType()
-export class IntFieldUpdateOperationsInput {
-    @Field(() => Int, {nullable:true})
-    set?: number;
-    @Field(() => Int, {nullable:true})
-    increment?: number;
-    @Field(() => Int, {nullable:true})
-    decrement?: number;
-    @Field(() => Int, {nullable:true})
-    multiply?: number;
-    @Field(() => Int, {nullable:true})
-    divide?: number;
-}
-
-@InputType()
 export class IntFilter {
     @Field(() => Int, {nullable:true})
     equals?: number;
@@ -82,8 +69,8 @@ export class IntFilter {
     gt?: number;
     @Field(() => Int, {nullable:true})
     gte?: number;
-    @Field(() => NestedIntFilter, {nullable:true})
-    not?: InstanceType<typeof NestedIntFilter>;
+    @Field(() => IntFilter, {nullable:true})
+    not?: InstanceType<typeof IntFilter>;
 }
 
 @InputType()
@@ -102,230 +89,18 @@ export class IntWithAggregatesFilter {
     gt?: number;
     @Field(() => Int, {nullable:true})
     gte?: number;
-    @Field(() => NestedIntWithAggregatesFilter, {nullable:true})
-    not?: InstanceType<typeof NestedIntWithAggregatesFilter>;
-    @Field(() => NestedIntFilter, {nullable:true})
-    _count?: InstanceType<typeof NestedIntFilter>;
-    @Field(() => NestedFloatFilter, {nullable:true})
-    _avg?: InstanceType<typeof NestedFloatFilter>;
-    @Field(() => NestedIntFilter, {nullable:true})
-    _sum?: InstanceType<typeof NestedIntFilter>;
-    @Field(() => NestedIntFilter, {nullable:true})
-    _min?: InstanceType<typeof NestedIntFilter>;
-    @Field(() => NestedIntFilter, {nullable:true})
-    _max?: InstanceType<typeof NestedIntFilter>;
-}
-
-@InputType()
-export class NestedFloatFilter {
-    @Field(() => Float, {nullable:true})
-    equals?: number;
-    @Field(() => [Float], {nullable:true})
-    in?: Array<number>;
-    @Field(() => [Float], {nullable:true})
-    notIn?: Array<number>;
-    @Field(() => Float, {nullable:true})
-    lt?: number;
-    @Field(() => Float, {nullable:true})
-    lte?: number;
-    @Field(() => Float, {nullable:true})
-    gt?: number;
-    @Field(() => Float, {nullable:true})
-    gte?: number;
-    @Field(() => NestedFloatFilter, {nullable:true})
-    not?: InstanceType<typeof NestedFloatFilter>;
-}
-
-@InputType()
-export class NestedIntFilter {
-    @Field(() => Int, {nullable:true})
-    equals?: number;
-    @Field(() => [Int], {nullable:true})
-    in?: Array<number>;
-    @Field(() => [Int], {nullable:true})
-    notIn?: Array<number>;
-    @Field(() => Int, {nullable:true})
-    lt?: number;
-    @Field(() => Int, {nullable:true})
-    lte?: number;
-    @Field(() => Int, {nullable:true})
-    gt?: number;
-    @Field(() => Int, {nullable:true})
-    gte?: number;
-    @Field(() => NestedIntFilter, {nullable:true})
-    not?: InstanceType<typeof NestedIntFilter>;
-}
-
-@InputType()
-export class NestedIntNullableFilter {
-    @Field(() => Int, {nullable:true})
-    equals?: number;
-    @Field(() => [Int], {nullable:true})
-    in?: Array<number>;
-    @Field(() => [Int], {nullable:true})
-    notIn?: Array<number>;
-    @Field(() => Int, {nullable:true})
-    lt?: number;
-    @Field(() => Int, {nullable:true})
-    lte?: number;
-    @Field(() => Int, {nullable:true})
-    gt?: number;
-    @Field(() => Int, {nullable:true})
-    gte?: number;
-    @Field(() => NestedIntNullableFilter, {nullable:true})
-    not?: InstanceType<typeof NestedIntNullableFilter>;
-}
-
-@InputType()
-export class NestedIntWithAggregatesFilter {
-    @Field(() => Int, {nullable:true})
-    equals?: number;
-    @Field(() => [Int], {nullable:true})
-    in?: Array<number>;
-    @Field(() => [Int], {nullable:true})
-    notIn?: Array<number>;
-    @Field(() => Int, {nullable:true})
-    lt?: number;
-    @Field(() => Int, {nullable:true})
-    lte?: number;
-    @Field(() => Int, {nullable:true})
-    gt?: number;
-    @Field(() => Int, {nullable:true})
-    gte?: number;
-    @Field(() => NestedIntWithAggregatesFilter, {nullable:true})
-    not?: InstanceType<typeof NestedIntWithAggregatesFilter>;
-    @Field(() => NestedIntFilter, {nullable:true})
-    _count?: InstanceType<typeof NestedIntFilter>;
-    @Field(() => NestedFloatFilter, {nullable:true})
-    _avg?: InstanceType<typeof NestedFloatFilter>;
-    @Field(() => NestedIntFilter, {nullable:true})
-    _sum?: InstanceType<typeof NestedIntFilter>;
-    @Field(() => NestedIntFilter, {nullable:true})
-    _min?: InstanceType<typeof NestedIntFilter>;
-    @Field(() => NestedIntFilter, {nullable:true})
-    _max?: InstanceType<typeof NestedIntFilter>;
-}
-
-@InputType()
-export class NestedStringFilter {
-    @Field(() => String, {nullable:true})
-    equals?: string;
-    @Field(() => [String], {nullable:true})
-    in?: Array<string>;
-    @Field(() => [String], {nullable:true})
-    notIn?: Array<string>;
-    @Field(() => String, {nullable:true})
-    lt?: string;
-    @Field(() => String, {nullable:true})
-    lte?: string;
-    @Field(() => String, {nullable:true})
-    gt?: string;
-    @Field(() => String, {nullable:true})
-    gte?: string;
-    @Field(() => String, {nullable:true})
-    contains?: string;
-    @Field(() => String, {nullable:true})
-    startsWith?: string;
-    @Field(() => String, {nullable:true})
-    endsWith?: string;
-    @Field(() => NestedStringFilter, {nullable:true})
-    not?: InstanceType<typeof NestedStringFilter>;
-}
-
-@InputType()
-export class NestedStringNullableFilter {
-    @Field(() => String, {nullable:true})
-    equals?: string;
-    @Field(() => [String], {nullable:true})
-    in?: Array<string>;
-    @Field(() => [String], {nullable:true})
-    notIn?: Array<string>;
-    @Field(() => String, {nullable:true})
-    lt?: string;
-    @Field(() => String, {nullable:true})
-    lte?: string;
-    @Field(() => String, {nullable:true})
-    gt?: string;
-    @Field(() => String, {nullable:true})
-    gte?: string;
-    @Field(() => String, {nullable:true})
-    contains?: string;
-    @Field(() => String, {nullable:true})
-    startsWith?: string;
-    @Field(() => String, {nullable:true})
-    endsWith?: string;
-    @Field(() => NestedStringNullableFilter, {nullable:true})
-    not?: InstanceType<typeof NestedStringNullableFilter>;
-}
-
-@InputType()
-export class NestedStringNullableWithAggregatesFilter {
-    @Field(() => String, {nullable:true})
-    equals?: string;
-    @Field(() => [String], {nullable:true})
-    in?: Array<string>;
-    @Field(() => [String], {nullable:true})
-    notIn?: Array<string>;
-    @Field(() => String, {nullable:true})
-    lt?: string;
-    @Field(() => String, {nullable:true})
-    lte?: string;
-    @Field(() => String, {nullable:true})
-    gt?: string;
-    @Field(() => String, {nullable:true})
-    gte?: string;
-    @Field(() => String, {nullable:true})
-    contains?: string;
-    @Field(() => String, {nullable:true})
-    startsWith?: string;
-    @Field(() => String, {nullable:true})
-    endsWith?: string;
-    @Field(() => NestedStringNullableWithAggregatesFilter, {nullable:true})
-    not?: InstanceType<typeof NestedStringNullableWithAggregatesFilter>;
-    @Field(() => NestedIntNullableFilter, {nullable:true})
-    _count?: InstanceType<typeof NestedIntNullableFilter>;
-    @Field(() => NestedStringNullableFilter, {nullable:true})
-    _min?: InstanceType<typeof NestedStringNullableFilter>;
-    @Field(() => NestedStringNullableFilter, {nullable:true})
-    _max?: InstanceType<typeof NestedStringNullableFilter>;
-}
-
-@InputType()
-export class NestedStringWithAggregatesFilter {
-    @Field(() => String, {nullable:true})
-    equals?: string;
-    @Field(() => [String], {nullable:true})
-    in?: Array<string>;
-    @Field(() => [String], {nullable:true})
-    notIn?: Array<string>;
-    @Field(() => String, {nullable:true})
-    lt?: string;
-    @Field(() => String, {nullable:true})
-    lte?: string;
-    @Field(() => String, {nullable:true})
-    gt?: string;
-    @Field(() => String, {nullable:true})
-    gte?: string;
-    @Field(() => String, {nullable:true})
-    contains?: string;
-    @Field(() => String, {nullable:true})
-    startsWith?: string;
-    @Field(() => String, {nullable:true})
-    endsWith?: string;
-    @Field(() => NestedStringWithAggregatesFilter, {nullable:true})
-    not?: InstanceType<typeof NestedStringWithAggregatesFilter>;
-    @Field(() => NestedIntFilter, {nullable:true})
-    _count?: InstanceType<typeof NestedIntFilter>;
-    @Field(() => NestedStringFilter, {nullable:true})
-    _min?: InstanceType<typeof NestedStringFilter>;
-    @Field(() => NestedStringFilter, {nullable:true})
-    _max?: InstanceType<typeof NestedStringFilter>;
-}
-
-@InputType()
-export class NullableStringFieldUpdateOperationsInput {
-    @Field(() => String, {nullable:true})
-    set?: string;
+    @Field(() => IntWithAggregatesFilter, {nullable:true})
+    not?: InstanceType<typeof IntWithAggregatesFilter>;
+    @Field(() => IntFilter, {nullable:true})
+    _count?: InstanceType<typeof IntFilter>;
+    @Field(() => FloatFilter, {nullable:true})
+    _avg?: InstanceType<typeof FloatFilter>;
+    @Field(() => IntFilter, {nullable:true})
+    _sum?: InstanceType<typeof IntFilter>;
+    @Field(() => IntFilter, {nullable:true})
+    _min?: InstanceType<typeof IntFilter>;
+    @Field(() => IntFilter, {nullable:true})
+    _max?: InstanceType<typeof IntFilter>;
 }
 
 @InputType()
@@ -334,12 +109,6 @@ export class SortOrderInput {
     sort!: keyof typeof SortOrder;
     @Field(() => NullsOrder, {nullable:true})
     nulls?: keyof typeof NullsOrder;
-}
-
-@InputType()
-export class StringFieldUpdateOperationsInput {
-    @Field(() => String, {nullable:true})
-    set?: string;
 }
 
 @InputType()
@@ -366,70 +135,8 @@ export class StringFilter {
     endsWith?: string;
     @Field(() => QueryMode, {nullable:true})
     mode?: keyof typeof QueryMode;
-    @Field(() => NestedStringFilter, {nullable:true})
-    not?: InstanceType<typeof NestedStringFilter>;
-}
-
-@InputType()
-export class StringNullableFilter {
-    @Field(() => String, {nullable:true})
-    equals?: string;
-    @Field(() => [String], {nullable:true})
-    in?: Array<string>;
-    @Field(() => [String], {nullable:true})
-    notIn?: Array<string>;
-    @Field(() => String, {nullable:true})
-    lt?: string;
-    @Field(() => String, {nullable:true})
-    lte?: string;
-    @Field(() => String, {nullable:true})
-    gt?: string;
-    @Field(() => String, {nullable:true})
-    gte?: string;
-    @Field(() => String, {nullable:true})
-    contains?: string;
-    @Field(() => String, {nullable:true})
-    startsWith?: string;
-    @Field(() => String, {nullable:true})
-    endsWith?: string;
-    @Field(() => QueryMode, {nullable:true})
-    mode?: keyof typeof QueryMode;
-    @Field(() => NestedStringNullableFilter, {nullable:true})
-    not?: InstanceType<typeof NestedStringNullableFilter>;
-}
-
-@InputType()
-export class StringNullableWithAggregatesFilter {
-    @Field(() => String, {nullable:true})
-    equals?: string;
-    @Field(() => [String], {nullable:true})
-    in?: Array<string>;
-    @Field(() => [String], {nullable:true})
-    notIn?: Array<string>;
-    @Field(() => String, {nullable:true})
-    lt?: string;
-    @Field(() => String, {nullable:true})
-    lte?: string;
-    @Field(() => String, {nullable:true})
-    gt?: string;
-    @Field(() => String, {nullable:true})
-    gte?: string;
-    @Field(() => String, {nullable:true})
-    contains?: string;
-    @Field(() => String, {nullable:true})
-    startsWith?: string;
-    @Field(() => String, {nullable:true})
-    endsWith?: string;
-    @Field(() => QueryMode, {nullable:true})
-    mode?: keyof typeof QueryMode;
-    @Field(() => NestedStringNullableWithAggregatesFilter, {nullable:true})
-    not?: InstanceType<typeof NestedStringNullableWithAggregatesFilter>;
-    @Field(() => NestedIntNullableFilter, {nullable:true})
-    _count?: InstanceType<typeof NestedIntNullableFilter>;
-    @Field(() => NestedStringNullableFilter, {nullable:true})
-    _min?: InstanceType<typeof NestedStringNullableFilter>;
-    @Field(() => NestedStringNullableFilter, {nullable:true})
-    _max?: InstanceType<typeof NestedStringNullableFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    not?: InstanceType<typeof StringFilter>;
 }
 
 @InputType()
@@ -456,14 +163,14 @@ export class StringWithAggregatesFilter {
     endsWith?: string;
     @Field(() => QueryMode, {nullable:true})
     mode?: keyof typeof QueryMode;
-    @Field(() => NestedStringWithAggregatesFilter, {nullable:true})
-    not?: InstanceType<typeof NestedStringWithAggregatesFilter>;
-    @Field(() => NestedIntFilter, {nullable:true})
-    _count?: InstanceType<typeof NestedIntFilter>;
-    @Field(() => NestedStringFilter, {nullable:true})
-    _min?: InstanceType<typeof NestedStringFilter>;
-    @Field(() => NestedStringFilter, {nullable:true})
-    _max?: InstanceType<typeof NestedStringFilter>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    not?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => IntFilter, {nullable:true})
+    _count?: InstanceType<typeof IntFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    _min?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    _max?: InstanceType<typeof StringFilter>;
 }
 
 @ObjectType()
@@ -484,6 +191,7 @@ export class AggregateUser {
 export class CreateManyUserArgs {
     @Field(() => [UserCreateManyInput], {nullable:false})
     @Type(() => UserCreateManyInput)
+    @ValidateNested({ each: true })
     data!: Array<UserCreateManyInput>;
     @Field(() => Boolean, {nullable:true})
     skipDuplicates?: boolean;
@@ -493,6 +201,7 @@ export class CreateManyUserArgs {
 export class CreateOneUserArgs {
     @Field(() => UserCreateInput, {nullable:false})
     @Type(() => UserCreateInput)
+    @ValidateNested({ each: true })
     data!: InstanceType<typeof UserCreateInput>;
 }
 
@@ -500,6 +209,7 @@ export class CreateOneUserArgs {
 export class DeleteManyUserArgs {
     @Field(() => UserWhereInput, {nullable:true})
     @Type(() => UserWhereInput)
+    @ValidateNested({ each: true })
     where?: InstanceType<typeof UserWhereInput>;
 }
 
@@ -507,6 +217,7 @@ export class DeleteManyUserArgs {
 export class DeleteOneUserArgs {
     @Field(() => UserWhereUniqueInput, {nullable:false})
     @Type(() => UserWhereUniqueInput)
+    @ValidateNested({ each: true })
     where!: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email'>;
 }
 
@@ -514,6 +225,7 @@ export class DeleteOneUserArgs {
 export class FindFirstUserOrThrowArgs {
     @Field(() => UserWhereInput, {nullable:true})
     @Type(() => UserWhereInput)
+    @ValidateNested({ each: true })
     where?: InstanceType<typeof UserWhereInput>;
     @Field(() => [UserOrderByWithRelationInput], {nullable:true})
     orderBy?: Array<UserOrderByWithRelationInput>;
@@ -531,6 +243,7 @@ export class FindFirstUserOrThrowArgs {
 export class FindFirstUserArgs {
     @Field(() => UserWhereInput, {nullable:true})
     @Type(() => UserWhereInput)
+    @ValidateNested({ each: true })
     where?: InstanceType<typeof UserWhereInput>;
     @Field(() => [UserOrderByWithRelationInput], {nullable:true})
     orderBy?: Array<UserOrderByWithRelationInput>;
@@ -548,6 +261,7 @@ export class FindFirstUserArgs {
 export class FindManyUserArgs {
     @Field(() => UserWhereInput, {nullable:true})
     @Type(() => UserWhereInput)
+    @ValidateNested({ each: true })
     where?: InstanceType<typeof UserWhereInput>;
     @Field(() => [UserOrderByWithRelationInput], {nullable:true})
     orderBy?: Array<UserOrderByWithRelationInput>;
@@ -565,6 +279,7 @@ export class FindManyUserArgs {
 export class FindUniqueUserOrThrowArgs {
     @Field(() => UserWhereUniqueInput, {nullable:false})
     @Type(() => UserWhereUniqueInput)
+    @ValidateNested({ each: true })
     where!: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email'>;
 }
 
@@ -572,6 +287,7 @@ export class FindUniqueUserOrThrowArgs {
 export class FindUniqueUserArgs {
     @Field(() => UserWhereUniqueInput, {nullable:false})
     @Type(() => UserWhereUniqueInput)
+    @ValidateNested({ each: true })
     where!: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email'>;
 }
 
@@ -579,9 +295,11 @@ export class FindUniqueUserArgs {
 export class UpdateManyUserArgs {
     @Field(() => UserUpdateManyMutationInput, {nullable:false})
     @Type(() => UserUpdateManyMutationInput)
+    @ValidateNested({ each: true })
     data!: InstanceType<typeof UserUpdateManyMutationInput>;
     @Field(() => UserWhereInput, {nullable:true})
     @Type(() => UserWhereInput)
+    @ValidateNested({ each: true })
     where?: InstanceType<typeof UserWhereInput>;
 }
 
@@ -589,9 +307,11 @@ export class UpdateManyUserArgs {
 export class UpdateOneUserArgs {
     @Field(() => UserUpdateInput, {nullable:false})
     @Type(() => UserUpdateInput)
+    @ValidateNested({ each: true })
     data!: InstanceType<typeof UserUpdateInput>;
     @Field(() => UserWhereUniqueInput, {nullable:false})
     @Type(() => UserWhereUniqueInput)
+    @ValidateNested({ each: true })
     where!: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email'>;
 }
 
@@ -599,6 +319,7 @@ export class UpdateOneUserArgs {
 export class UpsertOneUserArgs {
     @Field(() => UserWhereUniqueInput, {nullable:false})
     @Type(() => UserWhereUniqueInput)
+    @ValidateNested({ each: true })
     where!: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email'>;
     @Field(() => UserCreateInput, {nullable:false})
     @Type(() => UserCreateInput)
@@ -612,6 +333,7 @@ export class UpsertOneUserArgs {
 export class UserAggregateArgs {
     @Field(() => UserWhereInput, {nullable:true})
     @Type(() => UserWhereInput)
+    @ValidateNested({ each: true })
     where?: InstanceType<typeof UserWhereInput>;
     @Field(() => [UserOrderByWithRelationInput], {nullable:true})
     orderBy?: Array<UserOrderByWithRelationInput>;
@@ -731,6 +453,7 @@ export class UserCreateInput {
 export class UserGroupByArgs {
     @Field(() => UserWhereInput, {nullable:true})
     @Type(() => UserWhereInput)
+    @ValidateNested({ each: true })
     where?: InstanceType<typeof UserWhereInput>;
     @Field(() => [UserOrderByWithAggregationInput], {nullable:true})
     orderBy?: Array<UserOrderByWithAggregationInput>;
@@ -906,8 +629,8 @@ export class UserScalarWhereWithAggregatesInput {
     id?: InstanceType<typeof IntWithAggregatesFilter>;
     @Field(() => StringWithAggregatesFilter, {nullable:true})
     email?: InstanceType<typeof StringWithAggregatesFilter>;
-    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
-    name?: InstanceType<typeof StringNullableWithAggregatesFilter>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    name?: InstanceType<typeof StringWithAggregatesFilter>;
     @Field(() => StringWithAggregatesFilter, {nullable:true})
     password?: InstanceType<typeof StringWithAggregatesFilter>;
 }
@@ -951,46 +674,74 @@ export class UserUncheckedCreateInput {
 
 @InputType()
 export class UserUncheckedUpdateManyInput {
-    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof IntFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => Int, {nullable:true})
+    id?: number;
+    @Field(() => String, {nullable:true})
+    @Validator.IsEmail()
+    email?: string;
+    @Field(() => String, {nullable:true})
+    @Validator.IsString()
+    @Validator.MaxLength(20)
+    @Validator.MinLength(3)
+    name?: string;
+    @Field(() => String, {nullable:true})
+    @Validator.IsString()
+    @Validator.MaxLength(100)
+    @Validator.MinLength(8)
+    password?: string;
 }
 
 @InputType()
 export class UserUncheckedUpdateInput {
-    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof IntFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => Int, {nullable:true})
+    id?: number;
+    @Field(() => String, {nullable:true})
+    @Validator.IsEmail()
+    email?: string;
+    @Field(() => String, {nullable:true})
+    @Validator.IsString()
+    @Validator.MaxLength(20)
+    @Validator.MinLength(3)
+    name?: string;
+    @Field(() => String, {nullable:true})
+    @Validator.IsString()
+    @Validator.MaxLength(100)
+    @Validator.MinLength(8)
+    password?: string;
 }
 
 @InputType()
 export class UserUpdateManyMutationInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => String, {nullable:true})
+    @Validator.IsEmail()
+    email?: string;
+    @Field(() => String, {nullable:true})
+    @Validator.IsString()
+    @Validator.MaxLength(20)
+    @Validator.MinLength(3)
+    name?: string;
+    @Field(() => String, {nullable:true})
+    @Validator.IsString()
+    @Validator.MaxLength(100)
+    @Validator.MinLength(8)
+    password?: string;
 }
 
 @InputType()
 export class UserUpdateInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => String, {nullable:true})
+    @Validator.IsEmail()
+    email?: string;
+    @Field(() => String, {nullable:true})
+    @Validator.IsString()
+    @Validator.MaxLength(20)
+    @Validator.MinLength(3)
+    name?: string;
+    @Field(() => String, {nullable:true})
+    @Validator.IsString()
+    @Validator.MaxLength(100)
+    @Validator.MinLength(8)
+    password?: string;
 }
 
 @InputType()
@@ -1006,8 +757,8 @@ export class UserWhereUniqueInput {
     OR?: Array<UserWhereInput>;
     @Field(() => [UserWhereInput], {nullable:true})
     NOT?: Array<UserWhereInput>;
-    @Field(() => StringNullableFilter, {nullable:true})
-    name?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    name?: InstanceType<typeof StringFilter>;
     @Field(() => StringFilter, {nullable:true})
     password?: InstanceType<typeof StringFilter>;
 }
@@ -1024,8 +775,8 @@ export class UserWhereInput {
     id?: InstanceType<typeof IntFilter>;
     @Field(() => StringFilter, {nullable:true})
     email?: InstanceType<typeof StringFilter>;
-    @Field(() => StringNullableFilter, {nullable:true})
-    name?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    name?: InstanceType<typeof StringFilter>;
     @Field(() => StringFilter, {nullable:true})
     password?: InstanceType<typeof StringFilter>;
 }
@@ -1035,12 +786,8 @@ export class User {
     @Field(() => ID, {nullable:false})
     id!: number;
     @Field(() => String, {nullable:false})
-    @Validator.IsEmail()
     email!: string;
     @Field(() => String, {nullable:true})
-    @Validator.IsString()
-    @Validator.MaxLength(20)
-    @Validator.MinLength(3)
     name!: string | null;
     @HideField()
     password!: string;

@@ -14,12 +14,23 @@ datasource db {
 }
 
 generator nestgraphql {
-    provider = "node node_modules/prisma-nestjs-graphql"
-    output = "../../../generated/db-types/src"
-    fields_Validator_from = "class-validator"
-    fields_Validator_input = true
-    fields_Validator_output = true
-    emitSingle = true
+    provider                = "node node_modules/prisma-nestjs-graphql"
+    output                  = "../../../generated/db-types/src"
+    purgeOutput                   = false
+    combineScalarFilters          = true
+    emitSingle                    = true
+    noAtomicOperations            = true
+    // field validator
+    fields_Validator_input        = true
+    fields_Validator_output       = true
+    fields_Validator_model        = true
+    fields_Validator_from         = "class-validator"
+    // Args where|data nested validator
+    decorate_1_type               = "*Args"
+    decorate_1_field              = "@(data|where)"
+    decorate_1_name               = ValidateNested
+    decorate_1_from               = "class-validator"
+    decorate_1_arguments          = "['{ each: true }']"
 }
 
 model User {
