@@ -7,10 +7,12 @@
   },
   "private": true,
   "dependencies": {
+    "@mercuriusjs/gateway": "^1.2.0",
     "@nestjs/common": "^10.0.2",
     "@nestjs/core": "^10.0.2",
     "@nestjs/graphql": "^12.1.1",
     "@nestjs/mercurius": "^12.1.1",
+    "@nestjs/platform-express": "^10.0.2",
     "@nestjs/platform-fastify": "^10.3.8",
     "axios": "^1.6.0",
     "graphql": "^16.8.1",
