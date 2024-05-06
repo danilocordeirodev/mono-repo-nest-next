@@ -1,0 +1,9 @@
+{
+  "name": "client-generated-graphql-types",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/client/generated/graphql-types/src",
+  "projectType": "library",
+  "tags": ["scope:client"],
+  "// targets": "to see all targets run: nx show project client-generated-graphql-types --web",
+  "targets": {}
+}

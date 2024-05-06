@@ -78,3 +78,10 @@ create folder libs
  npm i -D @nx/next
 
  nx g @nx/next:app web
+
+ npm i urql
+
+ npm i -D graphql-codegen @graphql-codegen/cli @graphql-codegen/near-operation-file-preset @graphql-codegen/typed-document-node @graphql-codegen/typescript @graphql-codegen/typescript-operations @graphql-codegen/typescript-urql
+
+
+ nx g @nx/node:library client/generated/graphql-types --tags "scope:client"
