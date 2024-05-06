@@ -4,7 +4,7 @@ import { withApi } from '../api/client-api';
 
 export function Index() {
 
-  const [data] = useGetUserQuery({variables:{args: {id: 1}}})
+  const [{data, fetching}] = useGetUserQuery({variables:{args: {id: 1}}})
   console.log(data)
   /*
    * Replace the elements below with your own.
@@ -17,7 +17,7 @@ export function Index() {
         <div className="container">
           <div id="welcome">
             <h1>
-              <span> Hello there, </span>
+              <span> Hello {fetching? 'there' : data?.user.name}, </span>
               Welcome web 👋
             </h1>
           </div>
