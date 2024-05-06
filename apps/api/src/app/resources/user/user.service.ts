@@ -1,28 +1,32 @@
 import { DbService } from '@full-stack/api/data-access-db';
-import { CreateOneUserArgs, FindUniqueUserArgs, UpdateOneUserArgs } from '@full-stack/api/generated/db-types';
+import {
+  CreateOneUserArgs,
+  FindUniqueUserArgs,
+  UpdateOneUserArgs,
+} from '@full-stack/api/generated/db-types';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class UserService {
-  constructor(private db: DbService) {}
+  constructor(private database: DbService) {}
 
   create(userCreateArguments: CreateOneUserArgs) {
-    return this.db.user.create(userCreateArguments)
+    return this.database.user.create(userCreateArguments);
   }
 
   findAll() {
-    return this.db.user.findMany();
+    return this.database.user.findMany();
   }
 
   findOne(findUserArguments: FindUniqueUserArgs) {
-    return this.db.user.findUnique(findUserArguments);
+    return this.database.user.findUnique(findUserArguments);
   }
 
   update(userUpdateInput: UpdateOneUserArgs) {
-    return this.db.user.update(userUpdateInput);
+    return this.database.user.update(userUpdateInput);
   }
 
   remove(removeUserArguments: FindUniqueUserArgs) {
-    return this.db.user.delete(removeUserArguments);
+    return this.database.user.delete(removeUserArguments);
   }
 }

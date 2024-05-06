@@ -3,9 +3,10 @@ import { useGetUserQuery } from '../api/user/user.gql.gen';
 import { withApi } from '../api/client-api';
 
 export function Index() {
-
-  const [{data, fetching}] = useGetUserQuery({variables:{args: {id: 1}}})
-  console.log(data)
+  const [{ data, fetching }] = useGetUserQuery({
+    variables: { args: { id: 1 } },
+  });
+  console.log(data);
   /*
    * Replace the elements below with your own.
    *
@@ -17,7 +18,7 @@ export function Index() {
         <div className="container">
           <div id="welcome">
             <h1>
-              <span> Hello {fetching? 'there' : data?.user.name}, </span>
+              <span> Hello {fetching ? 'there' : data?.user.name}, </span>
               Welcome web 👋
             </h1>
           </div>
@@ -473,4 +474,4 @@ export function Index() {
   );
 }
 
-export default withApi(Index)
+export default withApi(Index);

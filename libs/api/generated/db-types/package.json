@@ -2,7 +2,11 @@
   "name": "@full-stack/api/generated/db-types",
   "version": "0.0.1",
   "dependencies": {
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "@nestjs/graphql": "^12.1.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
+    "@prisma/client": "^5.13.0"
   },
   "type": "commonjs",
   "main": "./src/index.js",

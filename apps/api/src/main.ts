@@ -3,12 +3,17 @@
  * This is only a minimal backend to get started.
  */
 
-import { BadRequestException, Logger, ValidationError, ValidationPipe } from '@nestjs/common';
+import {
+  BadRequestException,
+  Logger,
+  ValidationError,
+  ValidationPipe,
+} from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
 import { FastifyAdapter } from '@nestjs/platform-fastify';
-import helmet from "helmet"
+import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, new FastifyAdapter());
@@ -17,39 +22,39 @@ async function bootstrap() {
 
   const developmentContentSecurityPolicy = {
     directives: {
-      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", 'https:///unpkg.com/']
-    }
-  }
+      scriptSrc: [
+        "'self'",
+        "'unsafe-inline'",
+        "'unsafe-eval'",
+        'https:///unpkg.com/',
+      ],
+    },
+  };
 
   app.use(
-    helmet(
-      {
-        contentSecurityPolicy: developmentContentSecurityPolicy
-      }
-    )
-  )
+    helmet({
+      contentSecurityPolicy: developmentContentSecurityPolicy,
+    })
+  );
 
   app.enableCors({
-      origin: true
-    }
-  )
+    origin: true,
+  });
   app.useGlobalPipes(
     new ValidationPipe({
       skipMissingProperties: true,
       //whitelist: true,
       transform: true,
-      transformOptions: { enableImplicitConversion: true }
+      transformOptions: { enableImplicitConversion: true },
     })
-  )
+  );
   app.setGlobalPrefix(globalPrefix);
   const port = process.env.PORT || 3333;
   await app.listen(port);
   Logger.log(
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
   );
-  Logger.log(
-    `🚀 Application is running on: http://localhost:${port}/graphiql`
-  );
+  Logger.log(`🚀 Application is running on: http://localhost:${port}/graphiql`);
 }
 
 bootstrap();
