@@ -8,20 +8,37 @@ import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
 import { FastifyAdapter } from '@nestjs/platform-fastify';
+import helmet from "helmet"
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, new FastifyAdapter());
   const globalPrefix = 'api';
+  const isProduction = process.env.NODE_ENV === 'production';
+
+  const developmentContentSecurityPolicy = {
+    directives: {
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", 'https:///unpkg.com/']
+    }
+  }
+
+  app.use(
+    helmet(
+      {
+        contentSecurityPolicy: developmentContentSecurityPolicy
+      }
+    )
+  )
+
+  app.enableCors({
+      origin: true
+    }
+  )
   app.useGlobalPipes(
     new ValidationPipe({
+      skipMissingProperties: true,
+      //whitelist: true,
       transform: true,
-      exceptionFactory: (errors: ValidationError[]) => {
-        const errorsMessages = errors.map(error => 
-          Object.values(error.constraints),
-        );
-        return new BadRequestException(errorsMessages.toString());
-      },
-      forbidUnknownValues: false
+      transformOptions: { enableImplicitConversion: true }
     })
   )
   app.setGlobalPrefix(globalPrefix);
