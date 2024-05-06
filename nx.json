@@ -40,6 +40,15 @@
       "exclude": [
         "apps/api-e2e/**/*"
       ]
+    },
+    {
+      "plugin": "@nx/next/plugin",
+      "options": {
+        "startTargetName": "start",
+        "buildTargetName": "build",
+        "devTargetName": "dev",
+        "serveStaticTargetName": "serve-static"
+      }
     }
   ],
   "nxCloudAccessToken": "YmQxMTFkMDAtZjI4OS00OTFmLTlkM2YtNGUxNGVkMWUyNTVkfHJlYWQtd3JpdGU=",
@@ -59,6 +68,14 @@
         "production",
         "^production"
       ]
+    }
+  },
+  "generators": {
+    "@nx/next": {
+      "application": {
+        "style": "css",
+        "linter": "eslint"
+      }
     }
   }
 }

@@ -74,3 +74,7 @@ create folder libs
  npx prisma init
 
  nx g @nx/nest:library api/generated/db-types --buildable --tags "scope:api"
+
+ npm i -D @nx/next
+
+ nx g @nx/next:app web
