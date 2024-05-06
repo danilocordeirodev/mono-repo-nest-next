@@ -1,13 +1,18 @@
-import styles from './page.module.css';
+import styles from './index.module.css';
+import { useGetUserQuery } from '../api/user/user.gql.gen';
+import { withApi } from '../api/client-api';
 
-export default function Index() {
+export function Index() {
+
+  const [data] = useGetUserQuery({variables:{args: {id: 1}}})
+  console.log(data)
   /*
    * Replace the elements below with your own.
    *
    * Note: The corresponding styles are in the ./index.css file.
    */
   return (
-    <div className={styles.page}>
+    <div className={styles.index}>
       <div className="wrapper">
         <div className="container">
           <div id="welcome">
@@ -467,3 +472,5 @@ export default function Index() {
     </div>
   );
 }
+
+export default withApi(Index)
