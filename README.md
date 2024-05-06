@@ -85,3 +85,25 @@ create folder libs
 
 
  nx g @nx/node:library client/generated/graphql-types --tags "scope:client"
+
+
+preciso ficar add a parte abaixo no index.ts db-types pq sim
+ @InputType()
+export class FloatFilter {
+  @Field(() => Float, { nullable: true })
+  equals?: number;
+  @Field(() => [Float], { nullable: true })
+  in?: Array<number>
+  @Field(() => [Float], { nullable: true })
+  notIn?: Array<number>
+  @Field(() => Float, { nullable: true })
+  lt?: number
+  @Field(() => Float, { nullable: true })
+  lte?: number
+  @Field(() => Float, { nullable: true })
+  gt?: number
+  @Field(() => Float, { nullable: true })
+  gte?: number
+  @Field(() => FloatFilter, { nullable: true })
+  not?: InstanceType<typeof FloatFilter>
+}
