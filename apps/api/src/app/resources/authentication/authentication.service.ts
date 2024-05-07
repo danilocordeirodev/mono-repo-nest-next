@@ -2,13 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { LoginInput } from './dto/login.input';
 import { UserService } from '../user/user.service';
 import * as bcrypt from 'bcrypt';
+import { User } from '@full-stack/api/generated/db-types';
 
 @Injectable()
 export class AuthenticationService {
   constructor(private readonly userService: UserService) {}
 
-  async validateUser(email: string, password: string): Promise<any> {
-    return this.userService.findOne({ where: { email } });
+  async validateUser(email: string, password: string): Promise<User, null> {
+    const user = this.userService.findOne({ where: { email } });
+    const isMatch
   }
   login(loginInput: LoginInput) {
     return { id: loginInput.email };

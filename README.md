@@ -107,3 +107,5 @@ export class FloatFilter {
   @Field(() => FloatFilter, { nullable: true })
   not?: InstanceType<typeof FloatFilter>
 }
+
+npm i @nestjs/passport @nestjs/jwt passport-local
