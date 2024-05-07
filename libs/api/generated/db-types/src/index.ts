@@ -54,26 +54,6 @@ export class AffectedRows {
 }
 
 @InputType()
-export class FloatFilter {
-  @Field(() => Float, { nullable: true })
-  equals?: number;
-  @Field(() => [Float], { nullable: true })
-  in?: Array<number>
-  @Field(() => [Float], { nullable: true })
-  notIn?: Array<number>
-  @Field(() => Float, { nullable: true })
-  lt?: number
-  @Field(() => Float, { nullable: true })
-  lte?: number
-  @Field(() => Float, { nullable: true })
-  gt?: number
-  @Field(() => Float, { nullable: true })
-  gte?: number
-  @Field(() => FloatFilter, { nullable: true })
-  not?: InstanceType<typeof FloatFilter>
-}
-
-@InputType()
 export class IntFilter {
     @Field(() => Int, {nullable:true})
     equals?: number;
@@ -91,6 +71,26 @@ export class IntFilter {
     gte?: number;
     @Field(() => IntFilter, {nullable:true})
     not?: InstanceType<typeof IntFilter>;
+}
+
+@InputType()
+export class FloatFilter {
+  @Field(() => Float, { nullable: true })
+  equals?: number;
+  @Field(() => [Float], { nullable: true })
+  in?: Array<number>
+  @Field(() => [Float], { nullable: true })
+  notIn?: Array<number>
+  @Field(() => Float, { nullable: true })
+  lt?: number
+  @Field(() => Float, { nullable: true })
+  lte?: number
+  @Field(() => Float, { nullable: true })
+  gt?: number
+  @Field(() => Float, { nullable: true })
+  gte?: number
+  @Field(() => FloatFilter, { nullable: true })
+  not?: InstanceType<typeof FloatFilter>
 }
 
 @InputType()

@@ -8,9 +8,13 @@ import { User } from '@full-stack/api/generated/db-types';
 export class AuthenticationService {
   constructor(private readonly userService: UserService) {}
 
-  async validateUser(email: string, password: string): Promise<User, null> {
-    const user = this.userService.findOne({ where: { email } });
-    const isMatch
+  async validateUser(email: string, password: string): Promise<User | null> {
+    const user = await this.userService.findOne({ where: { email } });
+    if (!user) return null;
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return null;
+
+    return user;
   }
   login(loginInput: LoginInput) {
     return { id: loginInput.email };
