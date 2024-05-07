@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { MercuriusDriver, MercuriusDriverConfig } from '@nestjs/mercurius';
 import { UserModule } from './resources/user/user.module';
+import { AuthenticationModule } from './resources/authentication/authentication.module';
 import path from 'node:path';
 
 @Module({
@@ -15,6 +16,7 @@ import path from 'node:path';
       graphiql: true,
     }),
     UserModule,
+    AuthenticationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

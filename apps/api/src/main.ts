@@ -3,20 +3,22 @@
  * This is only a minimal backend to get started.
  */
 
-import {
-  BadRequestException,
-  Logger,
-  ValidationError,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
-import { FastifyAdapter } from '@nestjs/platform-fastify';
+import {
+  FastifyAdapter,
+  NestFastifyApplication,
+} from '@nestjs/platform-fastify';
 import helmet from 'helmet';
+import fastifyCookie from '@fastify/cookie';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, new FastifyAdapter());
+  const app = await NestFactory.create<NestFastifyApplication>(
+    AppModule,
+    new FastifyAdapter()
+  );
   const globalPrefix = 'api';
   const isProduction = process.env.NODE_ENV === 'production';
 
@@ -31,11 +33,17 @@ async function bootstrap() {
     },
   };
 
-  app.use(
-    helmet({
-      contentSecurityPolicy: developmentContentSecurityPolicy,
-    })
-  );
+  await app.register(fastifyCookie, {
+    secret: process.env.COOKIE_SECRET, // for cookies signature
+  });
+
+  // app.use(
+  //   helmet({
+  //     contentSecurityPolicy: isProduction
+  //       ? developmentContentSecurityPolicy
+  //       : undefined,
+  //   })
+  // );
 
   app.enableCors({
     origin: true,
@@ -57,4 +65,5 @@ async function bootstrap() {
   Logger.log(`🚀 Application is running on: http://localhost:${port}/graphiql`);
 }
 
+// eslint-disable-next-line unicorn/prefer-top-level-await
 bootstrap();
