@@ -20,14 +20,14 @@ export class UserResolver {
   }
 
   @UseGuards(CheckAuthGuard)
-  @Query(() => [User], { name: 'user' })
-  findAll() {
+  @Query(() => [User])
+  users() {
     return this.userService.findAll();
   }
 
   @UseGuards(CheckAuthGuard)
-  @Query(() => User, { name: 'user' })
-  findOne(@Args() findUserArguments: FindUniqueUserArgs) {
+  @Query(() => User)
+  user(@Args() findUserArguments: FindUniqueUserArgs) {
     return this.userService.findOne(findUserArguments);
   }
 

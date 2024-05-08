@@ -1,12 +1,17 @@
-import { createClient, fetchExchange, ssrExchange, TypedDocumentNode } from 'urql'
-import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next'
-import { DocumentNode } from 'graphql'
-import { SSRData } from '@urql/core/dist/types/exchanges/ssr'
-import { isAuthError } from './shared'
+import {
+  createClient,
+  fetchExchange,
+  ssrExchange,
+  TypedDocumentNode,
+} from 'urql';
+import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
+import { DocumentNode } from 'graphql';
+import { SSRData } from '@urql/core/dist/urql-core';
+import { isAuthError } from './shared';
 
 type SsrResult = GetServerSidePropsResult<{ urqlState?: SSRData }>
 type SsrQuery<D, V> = DocumentNode | TypedDocumentNode<D, V> | string
-type SsrContext = GetServerSidePropsContext
+type SsrContext = GetServerSidePropsContext;
 
 export async function serverQuery<
   QueryResult = { [key: string]: unknown },

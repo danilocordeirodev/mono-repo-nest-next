@@ -1,11 +1,14 @@
-import { GetUsersDocument, useGetUsersQuery } from '../../api/user/user.gql.gen';
+import {
+  GetUsersDocument,
+  useGetUsersQuery,
+} from '../../api/user/user.gql.gen';
 import { withApi } from '../../api/client-api';
 import { GetServerSidePropsContext } from 'next';
 import { serverQuery } from '../../api/server-api';
 
 export const getServerSideProps = (context: GetServerSidePropsContext) => {
   return serverQuery(GetUsersDocument, {}, context);
-}
+};
 
 export const UsersPage = () => {
   const [data] = useGetUsersQuery({ variables: {} });
