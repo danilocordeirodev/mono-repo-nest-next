@@ -1,20 +1,27 @@
-import { PassportStrategy } from '@nestjs/passport';
-import { Strategy } from 'passport-local';
-import { User } from '@full-stack/api/generated/db-types';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { AuthenticationService } from '../../resources/authentication/authentication.service';
+import { AuthGuard } from '@nestjs/passport';
+import {
+  ExecutionContext,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { GqlExecutionContext } from '@nestjs/graphql';
 
 @Injectable()
-export class LocalStrategy extends PassportStrategy(Strategy) {
-  constructor(private readonly authService: AuthenticationService) {
-    super({ usernameField: 'email', passwordField: 'password' }); // email will be passed to validate function
+export class CheckAuthGuard extends AuthGuard('jwt') {
+  getRequest(context: ExecutionContext) {
+    const context_ = GqlExecutionContext.create(context);
+    return context_.getContext().req;
   }
 
-  async validate(email: string, password: string): Promise<User> {
-    const user = this.authService.validateUser(email, password);
+  handleRequest(error, user, info, context) {
+    if (!user || info || error) {
+      const context_ = GqlExecutionContext.create(context);
+      const reply = context_.getContext().reply;
 
-    if (!user) {
-      throw new UnauthorizedException();
+      reply.setCookie('token', '');
+      reply.setCookie('token-expires', '');
+
+      throw error || new UnauthorizedException();
     }
 
     return user;
